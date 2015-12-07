@@ -1,0 +1,105 @@
+<ion-view class="background-main" view-title="{{'MAIN.ALARM.EDIT.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ui-sref="main.alarm.home">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <form name="alarmForm">
+        <ion-content scroll="true" class="has-one-button-footer">
+            <div class="padding">
+                <div class="text-center padded">
+                    <ion-list>
+                        <ion-item class="text-center item-clear">
+                            <div class="shape-image-medium v-middle">
+                                <div class="shape-icon" style="border-color: {{colorAlpha}} !important;">
+                                    <div class="center" style="background: {{color}} !important">
+                                        <img src="img/pill.png" alt=""/>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type='text' colorpicker change="changeColor" start="recordatorios.length" default="color"/>
+                        </ion-item>
+                        <ion-item class="item-input gray item-icon-right item-liked" ui-sref="main.alarm.medicines">
+                            <span class="">{{alarmMedicine.nombre || ('MAIN.ALARM.MEDICINE'|locale)}}</span>
+                            <i class="icon ion-chevron-right"></i>
+                        </ion-item>
+                        <!---->
+                        <ion-item class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.ALARM.KIND'|locale)}}" listpicker change="changeKind(alarm)" ng-model="alarm.tipo">
+                            <span class="" ng-if="alarm.tipo">{{alarm.tipo || ('MAIN.ALARM.KIND'|locale)}}</span>
+                            <span class="gray" ng-if="!alarm.tipo" >{{('MAIN.ALARM.KIND'|locale)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                                <span value="{{forma.nombre}}" ng-repeat="forma in medicineForma">{{forma.nombre}}</span>
+                            </div>
+                            <input type="hidden" required ng-model="alarm.tipo"/>
+                        </ion-item>
+                        <!---->
+
+                        <ion-item ng-if="alarm.tipo" class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.ALARM.DOSIS'|locale)}}" listpicker ng-model="alarm.dosis">
+                            <span class="" ng-if="alarm.dosis">{{alarm.dosis}} {{medicineForma[formaSelected].element  || ('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            <span class="gray" ng-if="!alarm.dosis">{{('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                                <span value="{{dosis}}" ng-repeat="dosis in medicineForma[formaSelected].dosis track by $index">{{dosis}} {{medicineForma[formaSelected].element || ('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            </div>
+                            <input type="hidden" required ng-model="alarm.dosis"/>
+                        </ion-item>
+
+                        <ion-item ng-if="!alarm.tipo" class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.ALARM.DOSIS'|locale)}}">
+                            <span class="gray" ng-if="!alarm.dosis">{{('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                        </ion-item>
+                        <!---->
+
+                        <!---->
+                        <ion-item class="item-input gray item-icon-right item-stacked-label item-clear-bottom">
+                            <div time-picker="alarm.hora">
+                                <span class="input-label">{{'MAIN.ALARM.INIT_HOUR'|locale}}</span>
+                                <input type="time" ng-model="alarm.hora" ng-init="hora(alarm)" required placeholder="{{'MAIN.ALARM.INIT_HOUR'|locale}}">
+                            </div>
+                        </ion-item>
+                        <!---->
+                        <ion-item class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.ALARM.FREQUENCY'|locale)}}" listpicker ng-model="alarm.frecuencia">
+                            <span class="" ng-class="{'gray': !alarm.frecuencia}" >{{((alarm.frecuencia)?'c/ ':'') + (alarm.frecuencia || ('MAIN.ALARM.FREQUENCY'|locale)) + ((alarm.frecuencia)?' hrs':'') }}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                                <span value="{{$index+1}}" ng-repeat="i in generateNumber(24) track by $index">c/ {{$index+1}}hrs</span>
+                            </div>
+                            <input type="hidden" required ng-model="alarm.frecuencia"/>
+                        </ion-item>
+                        <!---->
+
+                        <ion-item  ng-if="alarm.tipo" class="item-input gray item-icon-right item-clear-bottom item-liked" ng-init="hora(alarm)" title="{{('MAIN.ALARM.QUANTITY'|locale)}}" listpicker ng-model="alarm.cantidad">
+                            <span class="" ng-if="alarm.cantidad">{{(alarm.cantidad)}} {{medicineForma[formaSelected].unit || ('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            <span class="gray" ng-if="!alarm.cantidad">{{(('MAIN.ALARM.QUANTITY'|locale))}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                                <span value="{{cantidad}}" ng-repeat="cantidad in medicineForma[formaSelected].cantidad track by $index">{{cantidad}} {{medicineForma[formaSelected].element || ('MAIN.ALARM.DOSIS'|locale)}}</span>
+                            </div>
+                            <input type="hidden" required ng-model="alarm.cantidad"/>
+                        </ion-item>
+
+                        <ion-item ng-if="!alarm.tipo" class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.ALARM.DOSIS'|locale)}}">
+                            <span class="gray" ng-if="!alarm.cantidad">{{('MAIN.ALARM.QUANTITY'|locale)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                            </div>
+                        </ion-item>
+                        <!---->
+                        <ion-item class="item-input other" ng-click="delete()">
+                            <i class="icon assertive ion-ios-minus"></i> <span class="label lb-icon">{{'MAIN.ALARM.EDIT.REMOVE'|locale}}</span>
+                        </ion-item>
+                        <ion-item class="item-clear"></ion-item>
+                    </ion-list>
+                </div>
+            </div>
+        </ion-content>
+        <ion-footer-bar class="bar-clear text-center footer-has-button-block">
+            <ion-item class="item-clear item-no-margin-bottom item-no-margin-top item-no-padding-side">
+                <button class="button button-block button-calm button-ios" ng-click="edit()" ng-disabled="(alarmForm.$invalid || (alarmMedicine.nombre == undefined))">{{"MESSAGE.SAVE"|locale}}</button>
+            </ion-item>
+        </ion-footer-bar>
+    </form>
+</ion-view>

@@ -1,0 +1,54 @@
+<ion-view class="background-clean" view-title="{{'MAIN.MEDICINE.SEARCH.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ui-sref="main.search.home">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <!--<ion-nav-buttons side="right">-->
+        <!--<button class="button button-clear button-positive button-icon" ng-click="doSearch()">-->
+            <!--<i class="icon ion-ios-search"></i>-->
+        <!--</button>-->
+    <!--</ion-nav-buttons>-->
+    <ion-content scroll="true">
+        <div class="padded">
+            <form name="search">
+                <ion-list>
+                    <div alquimio-autocomplete="medicamentosAutocomplete" callback="doSearch(search)" form="search" ng-model="search.q">
+                        <ion-item class="item-input gray item-liked">
+                            <input type="text" ng-model="search.q" required minlength="3" placeholder="Buscar">
+                        </ion-item>
+                    </div>
+                    <ion-item class="item-clear">
+                        <button class="button button-block button-calm button-ios" ng-click="doSearch(search)" ng-disabled="search.$invalid">Buscar</button>
+                    </ion-item>
+                </ion-list>
+            </form>
+        </div>
+        <!--<div class="padding">-->
+        <ion-list ng-if="!results">
+            <ion-item class="item item-clear text-center">
+                <h2 class="font-ios">Realiza una busqueda de <br/>medicamentos</h2>
+            </ion-item>
+        </ion-list>
+        <ion-list ng-if="results.length > 0">
+            <ion-item class="item-divider item-clear">
+                <h2 class="font-ios">Resultados</h2>
+            </ion-item>
+            <ion-item class="item-avatar item-clear-padded-line item-icon-right" ui-sref="main.search.view({id: result.sucursal.id})" ng-repeat="result in results">
+                <img ng-src="{{result.sucursal.cadena.imagen}}" alt=""/>
+                <h2 class="balanced">{{result.medicamento.nombre}}</h2>
+                <p>Cadena: <b class="balanced">{{result.sucursal.cadena.nombre}}</b></p>
+                <p>Sucursal: <b class="balanced">{{result.sucursal.nombre}}</b></p>
+                <i class="icon ion-chevron-right balanced"></i>
+            </ion-item>
+        </ion-list>
+        <ion-list ng-if="results.length == 0 && results">
+            <ion-item class="item item-clear text-center">
+                <h2 class="font-ios">Sin Resultados</h2>
+            </ion-item>
+        </ion-list>
+        <!--</div>-->
+    </ion-content>
+</ion-view>

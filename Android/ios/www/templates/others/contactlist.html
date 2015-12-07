@@ -1,0 +1,16 @@
+<ion-view class="background-main" view-title="{{'OTHER.CONTACT.LIST.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ui-sref="main.dash.home">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true">
+        <ion-list>
+            <ion-item ui-sref="others.contactedit({phone: contact.telefono})" ng-repeat="contact in contacts" class="item-clear-padded-line item-icon-right">
+                <span class="balanced font-ios">{{contact.nombre}}</span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

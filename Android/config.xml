@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.alquimio.recalcine" version="1.o.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Prolife</name>
+    <description>
+    Aplicación de Prolife.
+    </description>
+    <author email="sebastian@alquimio.cl" href="http://alquim.io/">
+        Alquimio Consultores
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="whatsapp://*" />
+    <allow-intent href="tel:*" />
+    <preference name="phonegap-version" value="3.7.0" />
+    <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.splashscreen" version="1.0.0" />
+    <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="org.apache.cordova.contacts" />
+    <gap:plugin name="nl.x-services.plugins.actionsheet" />
+    <gap:plugin name="com.sharinglabs.imageresizer" version="0.1.2" />
+    <gap:plugin name="am.armsoft.plugins.listpicker" version="2.2.0" />
+    <gap:plugin name="com.cordova.plugins.sms" />
+    <gap:plugin name="cordova-plugin-datepicker" source="npm" />
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" />
+    <gap:plugin name="com.teamnemitoff.phonedialer" source="pgb" spec="0.3.0" />
+    <preference name="android-build-tool" value="ant" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="orientation" value="portrait" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    <gap:config-file overwrite="true" parent="LSApplicationQueriesSchemes" platform="ios">
+        <array>
+            <string>whatsapp</string>
+            <string>fb</string>
+        </array>
+    </gap:config-file>
+    <gap:splash gap:density="port-ldpi" gap:platform="android" src="resources/android/splash/drawable-port-ldpi-screen.png"/>
+    <gap:splash gap:density="port-mdpi" gap:platform="android" src="resources/android/splash/drawable-port-mdpi-screen.png"/>
+    <gap:splash gap:density="port-hdpi" gap:platform="android" src="resources/android/splash/drawable-port-hdpi-screen.png"/>
+    <gap:splash gap:density="port-xhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xhdpi-screen.png"/>
+    <gap:splash gap:density="port-xxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxhdpi-screen.png"/>
+    <gap:splash gap:density="port-xxxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxxhdpi-screen.png"/>
+    <gap:splash gap:platform="ios" height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640"/>
+    <gap:splash gap:platform="ios" height="1334" src="resources/ios/splash/Default-667h.png" width="750"/>
+    <gap:splash gap:platform="ios" height="2208" src="resources/ios/splash/Default-736h.png" width="1242"/>
+    <gap:splash gap:platform="ios" height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536"/>
+    <gap:splash gap:platform="ios" height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768"/>
+    <gap:splash gap:platform="ios" height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640"/>
+    <gap:splash gap:platform="ios" height="480" src="resources/ios/splash/Default~iphone.png" width="320"/>
+    <gap:splash src="resources/android/splash/drawable-port-hdpi-screen.png"/>
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
+</widget>

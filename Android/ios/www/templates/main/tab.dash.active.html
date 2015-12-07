@@ -1,0 +1,67 @@
+<ion-view class="background-orange" view-title="{{'MAIN.EMERGENCY.PROGRESS.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ng-click="cancel()">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true">
+        <div class="padding-top">
+            <div class="text-center">
+                <div class="shape-image white-shadow v-middle">
+                    <div class="shape-icon">
+                        <div class="center"  style="background-image: url('{{userActive.imagen}}');">
+                            <i ng-if="!userActive.imagen" class="icon ion-android-person"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div><span class="light">{{'MAIN.EMERGENCY.PROGRESS.CONTACTING'|locale}}</span></div>
+                <div class="big"><span class="light">{{userShow || userActive.nombre}}</span></div>
+                <span class="light" ng-if="userActive.tipo">({{userActive.tipo}})</span>
+            </div>
+            <br/>
+            <div class="text-center">
+                <div class="shape shape-orange no-shadow v-middle" ng-if="userActive.llamada">
+                    <div class="shape-icon mini">
+                        <div class="center">
+                            <i class="icon ion-ios-telephone"></i>
+                        </div>
+                    </div>
+                    <div class="foot-icon">
+                        <i class="icon ion-ios-checkmark"></i>
+                    </div>
+                </div>
+                <div class="shape shape-orange no-shadow v-middle" ng-if="userActive.sms">
+                    <div class="shape-icon mini">
+                        <div class="center">
+                            <i class="icon ion-android-textsms"></i>
+                        </div>
+                    </div>
+                    <div class="foot-icon">
+                        <i class="icon ion-ios-checkmark"></i>
+                    </div>
+                </div>
+                <div class="shape shape-orange no-shadow v-middle" ng-if="userActive.whatsapp">
+                    <div class="shape-icon mini">
+                        <div class="center">
+                            <i class="icon ion-social-whatsapp-outline"></i>
+                        </div>
+                    </div>
+                    <div class="foot-icon">
+                        <i class="icon ion-ios-checkmark"></i>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="map-active" map="'me'" marker="[]"></div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-clear text-center footer-has-button-block">
+        <ion-item class="item-clear item-no-margin-bottom item-no-margin-top item-no-padding-side">
+            <button class="button button-block button-calm button-ios" ng-click="cancel()" >{{"MESSAGE.CANCEL"|locale}}</button>
+        </ion-item>
+    </ion-footer-bar>
+</ion-view>

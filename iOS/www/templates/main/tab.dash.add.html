@@ -1,0 +1,93 @@
+<ion-view class="background-main" view-title="{{'MAIN.EMERGENCY.ADD.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ui-sref="main.dash.home">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive button-icon" ng-click="listContact(contact)">
+            <i class="icon ion-ios-contact-outline"></i>
+        </button>
+    </ion-nav-buttons>
+    <form name="contact">
+        <ion-content scroll="true" class="has-one-button-footer">
+            <div class="padding">
+                <div class="text-center padded">
+                    <ion-list>
+                        <ion-item class="text-center item-clear">
+                            <div class="shape-image v-middle shape-input" ng-model="contact.imagen" fileimage>
+                                <div class="shape-icon">
+                                    <div class="center" style="background-image: url('{{contact.imagen}}');">
+                                        <!--<img ng-if="contact.imagen" ng-src="{{contact.imagen}}" alt=""/>-->
+                                        <i ng-if="!contact.imagen" class="icon ion-android-person"></i>
+                                    </div>
+                                </div>
+                                <div class="foot-icon">
+                                    <i class="icon ion-android-add"></i>
+                                </div>
+                                <input type="file" class="hide" accept="image/jpeg"/>
+                            </div>
+                        </ion-item>
+                        <ion-item class="item-input gray">
+                            <input type="text" ng-model="contactData.nombre" required minlength="3" placeholder="{{'MAIN.EMERGENCY.CONTACT_NAME'|locale}}">
+                        </ion-item>
+                        <ion-item class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}" listpicker ng-model="contact.kind">
+                            <span class="gray" >{{contact.kind || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <div class="hide elements">
+                                <span value="Pareja">Pareja</span>
+                                <span value="Padre">Padre</span>
+                                <span value="Madre">Madre</span>
+                                <span value="Hermano/a">Hermano/a</span>
+                                <span value="Amigo/a">Amigo/a</span>
+                                <span value="Hijo/a">Hijo/a</span>
+                                <span value="Otro">Otro</span>
+                            </div>
+                            <input type="hidden" required ng-model="contact.kind"/>
+                        </ion-item>
+                        <!--<ion-item class="item-input gray item-icon-right item-clear-bottom item-liked select-inside">
+                            <span class="gray-input" >{{contact.kind || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale|uppercase)}}</span>
+                            <i class="icon ion-chevron-down"></i>
+                            <span class="hide" select-inside="'Pareja'" ng-model="contact.kind"></span>
+                            <select class="like-input"  required ng-model="contact.kind">
+                                <option value="Pareja">Pareja/a</option>
+                                <option value="Padre">Padre</option>
+                                <option value="Madre">Madre</option>
+                                <option value="Amigo/a">Amigo/a</option>
+                                <option value="Hijo/a">Hijo/a</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </ion-item>-->
+                        <ion-item class="item-input gray">
+                            <input type="text" required ng-model="contactData.telefono" minlength="2" placeholder="{{'MAIN.EMERGENCY.CONTACT_PHONE'|locale}}">
+                        </ion-item>
+                        <ion-item class="item-input item-clear other">
+                            <span class="label lb-gray">{{'MAIN.EMERGENCY.CONTACT_NOTIFY'|locale}}</span>
+                            <span class="icons">
+                                <span class="icon-box" ng-click="toggle(contact, 'call')" ng-class="{'active': contact.call}">
+                                    <i class="icon ion-ios-telephone primary"></i>
+                                    <span class="icon secondary ion-ios-checkmark"></span>
+                                </span>
+                                <span class="icon-box" ng-click="toggle(contact, 'message')" ng-class="{'active': contact.message}">
+                                    <i class="icon ion-android-textsms primary"></i>
+                                    <span class="icon secondary ion-ios-checkmark"></span>
+                                </span>
+                                <span class="icon-box" ng-click="toggle(contact, 'whatsapp')" ng-class="{'active': contact.whatsapp}">
+                                    <i class="icon ion-social-whatsapp-outline primary"></i>
+                                    <span class="icon secondary ion-ios-checkmark"></span>
+                                </span>
+                            </span>
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>
+        </ion-content>
+        <ion-footer-bar class="bar-clear text-center footer-has-button-block">
+            <ion-item class="item-clear item-no-margin-bottom item-no-margin-top item-no-padding-side">
+                <button class="button button-block button-calm button-ios" ng-click="add(contact)" ng-disabled="contact.$invalid || !(contact.call || contact.message || contact.whatsapp)">{{"REGISTER.ACCEPT"|locale}}</button>
+            </ion-item>
+        </ion-footer-bar>
+    </form>
+</ion-view>

@@ -1,0 +1,36 @@
+<ion-view class="background-main" view-title="{{'MAIN.MEDICINE.HOME.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ng-click="back()">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true" data-tap-disabled="true" class="scroll-fullsized">
+        <div class="map-wrapper" data-tap-disabled="true" upperspace map marker="marker"></div>
+        <div class="farm-info padding" lowerspace>
+            <div class="farm-wrapper">
+                <div class="logo">
+                    <img ng-src="{{sucursal.cadena.imagen}}" alt=""/>
+                </div>
+                <div class="balanced title">{{sucursal.nombre|capitalize}}</div>
+                <hr/>
+                <ion-item class="item-icon-left item-clear item-info">
+                    <i class="icon ion-ios-navigate-outline balanced"></i>
+                    {{sucursal.direccion}}
+                </ion-item>
+                <ion-item class="item-icon-left item-clear item-info">
+                    <i class="icon ion-ios-clock-outline balanced"></i>
+                    {{sucursal.horario}}
+                </ion-item>
+                <hr/>
+                <ion-list class="list-medicine">
+                    <ion-item class="item-icon-left item-clear item-medicine-map" ng-repeat="medicine in medicinesHere|orderBy:'medicamento.nombre'">
+                        <i class="icon ion-ios-checkmark pink"></i>
+                        {{medicine.medicamento.nombre}}
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

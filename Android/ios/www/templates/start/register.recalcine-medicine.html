@@ -1,0 +1,27 @@
+<ion-view class="background-clean" view-title="{{'REGISTER.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ui-sref="start.step-b">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-calm head-blue" ng-click="back()">
+            {{"REGISTER.OK"|locale}}
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true">
+        <ion-list>
+            <ion-item class="item-input" style="border: 1px solid lightgray !important;">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" ng-model="search.filter" placeholder="{{'MAIN.MEDICINE.SEARCH.TITLE'|locale}}...">
+            </ion-item>
+            <ion-item ng-click="addMedicina(medicine)" class="item-clear-padded-line item-icon-right" ng-if="search.filter.length > 0" ng-repeat="medicine in medicines | filter: {nombre: search.filter}">
+                <span class="balanced font-ios">{{medicine.nombre}}</span>
+                <i class="icon ion-ios-plus-empty balanced" ng-if="!existMedicine(medicine)"></i>
+                <i class="icon ion-ios-checkmark-empty balanced" ng-if="existMedicine(medicine)"></i>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

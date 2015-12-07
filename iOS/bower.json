@@ -1,0 +1,19 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.1",
+    "angular-mocks": "~1.4.3",
+    "ionic-service-core": "~0.1.10",
+    "ngCordova": "~0.1.19-alpha",
+    "ionic-service-push": "~0.1.13"
+  },
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular-resource": "~1.4.3",
+    "lodash": "~3.10.1",
+    "spectrum": "~1.7.1",
+    "angular-ios9-uiwebview-patch": "~1.1.1",
+    "angular-google-maps": "*"
+  }
+}

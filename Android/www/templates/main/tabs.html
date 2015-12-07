@@ -1,0 +1,66 @@
+<ion-side-menus>
+  <!-- Left menu -->
+  <ion-side-menu side="left">
+    <ion-list ng-controller="SideMenuCtrl" class="menu-side">
+      <div class="item item-calm item-profile" ui-sref="others.profileedit">
+        <div class="picture">
+          <i ng-if="!user.imagen || user.imagen == ''" class="icon ion-android-person"></i>
+          <img ng-if="user.imagen || user.imagen != ''" ng-src="{{user.imagen}}" alt=""/>
+        </div>
+        <div class="name"><span>{{user.name}} {{user.lastname}}</span> <span ng-if="(!user.name && !user.lastname) || (user.name.length == 0 && user.lastname.length == 0)">{{user.username}}</span></div>
+        <div class="email">{{user.email}}</div>
+        <i class="icon ion-ios-compose-outline"></i>
+      </div>
+      <ion-item class="item-toggle item-clear-padded-line">
+        <span class="calm">{{"MAIN.SIDEMENU.ALERT_MEDICINE"|locale}}</span>
+        <label class="toggle toggle-stable">
+          <input name="alert_m" type="checkbox" ng-change="updateSetting()" ng-model="setting.alert_m">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </ion-item>
+      <ion-item class="item-toggle item-clear-padded-line">
+        <span class="calm">{{"MAIN.SIDEMENU.ALERT_STOCK"|locale}}</span>
+        <label class="toggle toggle-stable">
+          <input name="alert_s" type="checkbox" ng-change="updateSetting()" ng-model="setting.alert_s">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </ion-item>
+      <ion-item ui-sref="others.contactlist" class="item-icon-right item-clear-padded-line">
+                <span class="calm">{{"MAIN.SIDEMENU.EDIT_CONTACTS"|locale}}
+                <i class="icon ion-ios-gear-outline"></i></span>
+      </ion-item>
+      <ion-item ui-sref="others.medicinelist" class="item-icon-right item-clear-padded-line">
+                <span class="calm">{{"MAIN.SIDEMENU.EDIT_MEDICINES"|locale}}
+                <i class="icon ion-ios-gear-outline"></i></span>
+      </ion-item>
+      <ion-item class=" item-clear-padded-line" ng-click="logout()">
+        <span class="calm"><span class="energized">{{"MAIN.SIDEMENU.LOGOUT"|locale}}</span></span>
+      </ion-item>
+    </ion-list>
+  </ion-side-menu>
+  <ion-side-menu-content>
+    <ion-tabs class="tabs-icon-top tabs-balanced" ng-class="{'tabs-item-hide': tabItemHide}">
+
+      <!-- Dashboard Tab -->
+      <ion-tab title="{{'MAIN.TABS.EMERGENCY'|locale}}" icon-on="ion-siren" icon-off="ion-siren-clear" href="#/main/dash/home">
+        <ion-nav-view name="tab-dash"></ion-nav-view>
+      </ion-tab>
+      <!-- Chats Tab -->
+      <ion-tab title="{{'MAIN.TABS.SEARCH'|locale}}" icon-off="ion-ios-location-outline" icon-on="ion-ios-location" href="#/main/search/home">
+        <ion-nav-view name="tab-search"></ion-nav-view>
+      </ion-tab>
+
+      <!-- Account Tab -->
+      <ion-tab title="{{'MAIN.TABS.ALARM'|locale}}" icon-off="ion-android-alarm-clock" icon-on="ion-android-alarm-clock" href="#/main/alarm/home">
+        <ion-nav-view name="tab-alarm"></ion-nav-view>
+      </ion-tab>
+
+    </ion-tabs>
+  </ion-side-menu-content>
+</ion-side-menus>
+
+

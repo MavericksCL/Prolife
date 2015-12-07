@@ -1,0 +1,104 @@
+<ion-view class="background-main" view-title="{{'MAIN.EMERGENCY.HOME.TITLE'|locale}}">
+    <ion-nav-bar class="bar-light title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear button-positive button-icon" ng-click="toggleLeft()">
+            <i class="icon ion-navicon"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive button-icon" ui-sref="main.dash.add">
+            <i class="icon ion-ios-plus-empty"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true">
+        <h2 class="balanced line-height-h2 relative">
+            <span class="siren-home">
+                <img ng-src="img/{{svg('siren-orange')}}" alt=""/>
+            </span>
+            EMERGENCIA <br/>
+            <b>MÉDICA</b>
+            <span class="left-bar-header-e"></span>
+            <span class="right-bar-header-e"></span>
+        </h2>
+        <br/>
+        <div class="text-center" ng-cloak ui-sref="main.dash.add" ng-if="contacts.length == 0 || !contacts">
+            <div class="add-shape-plus">
+                <div class="contact-icon">
+                    <div class="center">
+                        <i class="icon ion-ios-plus-empty"></i>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="gray font-ios large m-top" ng-bind-html="'MAIN.EMERGENCY.HOME.ADD'|locale:null:'html'"></div>
+        </div>
+        <div class="text-center">
+            <div class="shape v-middle v-top v-home" ng-cloak ng-if="contacts.length > 1 && contacts[1]" ui-sref="main.dash.active({phone: contacts[1].telefono})">
+                <div class="shape-icon">
+                    <div class="center" style="background-image: url('{{contacts[1].imagen}}');">
+                        <!--<img ng-if="contact.imagen" ng-src="{{contact.imagen}}" alt=""/>-->
+                        <i ng-if="!contacts[1].imagen" class="icon ion-android-person"></i>
+                    </div>
+                </div>
+                <div class="text-center positive name">{{contacts[1].nombre}}</div>
+            </div>
+            <div class="shape-image v-middle v-top v-main v-home"  ng-cloak ng-if="contacts.length > 0 && contacts[0]" ui-sref="main.dash.active({phone: contacts[0].telefono})">
+                <div class="shape-icon">
+                    <div class="center">
+                        <div class="center" style="background-image: url('{{contacts[0].imagen}}');">
+                            <!--<img ng-if="contact.imagen" ng-src="{{contact.imagen}}" alt=""/>-->
+                            <i ng-if="!contacts[0].imagen" class="icon ion-android-person"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center positive name">{{contacts[0].nombre}}</div>
+            </div>
+            <div class="shape v-middle v-top v-home" ng-cloak ng-if="contacts.length > 2 && contacts[2]" ui-sref="main.dash.active({phone: contacts[2].telefono})">
+                <div class="shape-icon">
+                    <div class="center" style="background-image: url('{{contacts[2].imagen}}');">
+                        <!--<img ng-if="contact.imagen" ng-src="{{contact.imagen}}" alt=""/>-->
+                        <i ng-if="!contacts[2].imagen" class="icon ion-android-person"></i>
+                    </div>
+                </div>
+                <div class="text-center positive name">{{contacts[2].nombre}}</div>
+            </div>
+        </div>
+        <div class="text-center" ng-cloak ng-if="contacts.length > 3 && !showing">
+            <button class="button button-ios button-calm button-small" ng-click="toggleContacts()">Ver todos</button>
+        </div>
+        <div class="text-center" ng-if="contacts.length > 3 && showing">
+            <div class="shape v-middle v-top v-home" ng-repeat="contact in contacts | begin:3" ui-sref="main.dash.active({phone: contact.telefono})">
+                <div class="shape-icon">
+                    <div class="center" style="background-image: url('{{contact.imagen}}');">
+                        <!--<img ng-if="contact.imagen" ng-src="{{contact.imagen}}" alt=""/>-->
+                        <i ng-if="!contact.imagen" class="icon ion-android-person"></i>
+                    </div>
+                </div>
+                <div class="text-center positive name">{{contact.nombre}}</div>
+            </div>
+            <br/>
+            <br/>
+            <div class="text-center" ng-cloak ng-if="showing">
+                <button class="button button-ios button-calm button-small" ng-click="toggleContacts()">Ocultar</button>
+            </div>
+        </div>
+        <div class="padding" ng-cloak ng-if="contacts.length > 0" >
+            <div class="line line-calm"></div>
+            <div class="padding-top text-center">
+                <div class="shape v-middle" ui-sref="main.dash.active">
+                    <div class="shape-icon">
+                        <div class="center">
+                            <i class="icon ion-android-people"></i>
+                        </div>
+                    </div>
+                    <div class="head-icon">
+                        <i class="icon ion-android-textsms"></i>
+                    </div>
+                </div>
+                <div class="v-middle positive text-left font-ios" ng-bind-html="'MAIN.EMERGENCY.HOME.NOTIFY'|locale:null:'html'">
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

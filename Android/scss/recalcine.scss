@@ -1,0 +1,26 @@
+/*
+  █████╗ ██╗      ██████╗ ██╗   ██╗██╗███╗   ███╗   ██╗ ██████╗
+ ██╔══██╗██║     ██╔═══██╗██║   ██║██║████╗ ████║   ██║██╔═══██╗
+ ███████║██║     ██║   ██║██║   ██║██║██╔████╔██║   ██║██║   ██║
+ ██╔══██║██║     ██║▄▄ ██║██║   ██║██║██║╚██╔╝██║   ██║██║   ██║
+ ██║  ██║███████╗╚██████╔╝╚██████╔╝██║██║ ╚═╝ ██║██╗██║╚██████╔╝
+ ╚═╝  ╚═╝╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝     ╚═╝╚═╝╚═╝ ╚═════╝
+ Project: ProLife (Ex Recalcine)
+ Version: 1.2.0
+ ----------------------------------
+ Desarrollado por AlquimIO | 2015  */
+
+@import "recalcine/type";
+@import "recalcine/layout";
+@import "recalcine/ionic";
+@import "recalcine/start";
+@import "recalcine/dash";
+
+.debug_visible {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  min-height: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}

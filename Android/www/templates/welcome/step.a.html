@@ -1,0 +1,33 @@
+<ion-view class="background-clean" view-title="" hide-nav-bar="false">
+    <ion-nav-bar class="bar-clear title-blue bar-ios">
+    </ion-nav-bar>
+    <ion-content scroll="true" class="has-header-padding" on-swipe-left="welcome('welcome.b')">
+        <ion-list>
+            <ion-item class="item-clear">
+            <h1 class="text-center calm">BIENVENIDO</h1>
+            </ion-item>
+            <ion-item class="item-clear item-280px item-no-padding-bottom">
+                <img class="img-responsive padded img-middle" src="img/welcome.a.png" alt=""/>
+            </ion-item>
+            <ion-item class="item-clear text-center item-no-padding-bottom item-92px">
+                Agrega los contactos que necesites <br/>
+                para una situación de emergencia. <br/>
+                Configura la forma de contactarlos.
+            </ion-item>
+
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-clear text-center footer-has-button-block">
+        <ion-item class="text-center item-clear item-no-margin-top item-no-padding-bottom item-height-55">
+            <div class="slider-pager footer">
+                <span class="slider-pager-page active" ui-sref="welcome.a" ><i class="icon ion-record"></i></span>
+                <span class="slider-pager-page" ui-sref="welcome.b"><i class="icon ion-record"></i></span>
+                <span class="slider-pager-page" ui-sref="welcome.c"><i class="icon ion-record"></i></span>
+            </div>
+        </ion-item>
+        <ion-item class="text-center item-clear item-no-margin-top item-height-55">
+            <button class="button button-clear" ui-sref="welcome.b"><span class="calm">Omitir</span></button>
+        </ion-item>
+        <!--<ion-item class="text-center item-clear item-no-margin-top"><span class="calm">{{"LOGIN.RECOVERY"|locale}}</span></ion-item>-->
+    </ion-footer-bar>
+</ion-view>
