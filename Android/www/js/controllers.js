@@ -1049,6 +1049,7 @@ angular.module('Recalcine.controllers', [])
 		};
 		$scope.setFilter("55beb2084f0294461dae779b");
 		$geolocation.getCurrentPosition().then(function(res){
+			$toast.hide();
 			Sucursal.find({
 				filter: { where: {geo: {near: [res.lat, res.long]}}, limit: 200, include: { relation: "cadena" } }
 			}).$promise.then(function(res){
@@ -1061,7 +1062,28 @@ angular.module('Recalcine.controllers', [])
 
 				}, function(){
 					$toast.show($localization.get("MESSAGE.ERROR_PROCESSING"));
-				})
+				}, function(){
+
+			})
+		}, function(){
+
+		}, function(res){
+			$toast.hide();
+			Sucursal.find({
+				filter: { where: {geo: {near: [res.lat, res.long]}}, limit: 200, include: { relation: "cadena" } }
+			}).$promise.then(function(res){
+				$localStorage.setJSON("sucursales", res, false);
+				if($scope.filter.length > 0) {
+					$rootScope.sucursales = _.where(res, {cadena: {id: $scope.filter}});
+				}else{
+					//$rootScope.sucursales = res;
+				}
+
+			}, function(){
+				$toast.show($localization.get("MESSAGE.ERROR_PROCESSING"));
+			}, function(){
+
+			})
 		});
 		$scope.centerChange = function(lat, long){
 			if($cordovaNetwork.isOffline()){
@@ -1088,6 +1110,7 @@ angular.module('Recalcine.controllers', [])
 		//$scope.sucursales = $localStorage.getJSON("sucursales", false) || [];
 		$scope.marker = [];
 		$toast.loading($localization.get("MESSAGE.LOADING"));
+
 		if($cordovaNetwork.isOffline()){
 			$toast.show("Debes estar conectado para realizar esta acción");
 		}else {
@@ -1095,9 +1118,9 @@ angular.module('Recalcine.controllers', [])
 				$scope.sucursal = res;
 				$scope.marker.push({lat: $scope.sucursal.geo.lat, lng: $scope.sucursal.geo.lng});
 				$scope.medicinesHere = MedicamentoSucursal.find({filter: {include: {relation: "medicamento"}, where: {sucursalId: $stateParams.id}}});
-				$toast.hide()
+				$toast.hide();
 			}, function (err) {
-				$toast.hide()
+				$toast.hide();
 			});
 		}
 	})
@@ -1115,15 +1138,15 @@ angular.module('Recalcine.controllers', [])
 
 		$scope.activeSearch = function(){
 
-		}
+		};
 
 		$scope.doSearch = function(form){
 			if($cordovaNetwork.isOffline()){
 				$toast.show("Debes estar conectado para realizar esta acción");
 				return;
 			}
-			$toast.sending($localization.get("MESSAGE.SEARCHING"));
 			s = new RegExp(".*"+form.q+"*.");
+			$toast.loading($localization.get("MESSAGE.SEARCHING"));
 			MedicamentoSucursal.find({
 				filter: {
 					"include": [{
@@ -1141,26 +1164,26 @@ angular.module('Recalcine.controllers', [])
 					}]
 				}
 			}).$promise.then(function(res){
-					$toast.hide();
-					res = _.filter(res, function(o){
-						if(o.medicamento) {
-							if (o.medicamento.nombre.length > 0) {
-								return true;
-							}
+				$toast.hide();
+				res = _.filter(res, function(o){
+					if(o.medicamento) {
+						if (o.medicamento.nombre.length > 0) {
+							return true;
 						}
-						return false
-					});
-					if(res.length == 0) {
-						$toast.show("No se encontraron medicamentos");
 					}
-					if(res.length == 1) {
-						$toast.show("Se encontró " + res.length + " medicamento");
-					}
-					if(res.length > 1) {
-						$toast.show("Se encontraron " + res.length + " medicamentos");
-					}
-					$scope.results = res;
-				}, function(err){
+					return false
+				});
+				if(res.length == 0) {
+					$toast.show("No se encontraron medicamentos");
+				}
+				if(res.length == 1) {
+					$toast.show("Se encontró " + res.length + " medicamento");
+				}
+				if(res.length > 1) {
+					$toast.show("Se encontraron " + res.length + " medicamentos");
+				}
+				$scope.results = res;
+			}, function(err){
 					$toast.hide();
 				})
 		};

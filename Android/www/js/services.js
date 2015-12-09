@@ -475,6 +475,7 @@ angular.module('Recalcine.services', [])
       }
 
       function hide(){
+        console.log("Hidding");
         $ionicLoading.hide();
       }
 

@@ -286,8 +286,7 @@ angular.module('Recalcine.directives', [])
 			}
 		}
 	})
-		.directive("map", function($log, $interval, $rootScope, $timeout, $filter, $toast, $localization, $geolocation, $cordovaNetwork){
-			var centered = false;
+		.directive("map", function($log, $interval, $rootScope, $localStorage, $timeout, $filter, $toast, $localization, $geolocation, $cordovaNetwork){
 			return {
 				scope:  {
 					options: "=map",
@@ -296,6 +295,8 @@ angular.module('Recalcine.directives', [])
 					change: "="
 				},
 				link: function(scope, element, attr){
+					var centered = false;
+					var newCentered = false;
 					var map;
 					var markers = [];
 					var me;
@@ -303,7 +304,11 @@ angular.module('Recalcine.directives', [])
 						var infowindow = new google.maps.InfoWindow({});
 						scope.marker = scope.marker || [];
 						$toast.loading($localization.get("MESSAGE.LOADING"));
-						var center = {lat: 0, lng: 0};
+						var center = $localStorage.getJSON("location", false) || {lat: -33.4718999, lng: -70.9100214};
+						if(center.long){
+							center.lng = center.long;
+							delete center.long;
+						}
 						if (scope.marker.length > 0) {
 							center = {lat: scope.marker[0].lat, lng: scope.marker[0].lng};
 						}
@@ -323,19 +328,52 @@ angular.module('Recalcine.directives', [])
 								center = map.getCenter();
 								scope.change(center.lat(), center.lng());
 							}
-							$toast.hide();
 							//google.maps.event.trigger(map,'resize');
 						});
 						google.maps.event.addListener(map, 'resize', function () {
-							if (scope.marker.length > 0) {
+							if (scope.marker.length > 0 && !newCentered) {
 								//if(!map.updated) {
 								map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
+								newCentered = true;
 
 								map.updated = true;
 								//}
 							}
-							$toast.hide();
+							$geolocation.getCurrentPosition().then(function (res) {
+								google.maps.event.trigger(map, 'resize');
+								if (scope.marker.length == 0) {
+									map.setCenter(new google.maps.LatLng(res.lat, res.long));
+									centered = true;
+								}
+								try {
+									me.setMap(null);
+								} catch (e) {
+
+								}
+								//if(scope.options == "me"){
+								me = new google.maps.Marker({
+									position: new google.maps.LatLng(res.lat, res.long),
+									icon: "img/"+$rootScope.svg("pin2"),
+									map: map
+								});
+							}, function (res) {
+							}, function (res) {
+							});
 						});
+						if(center.lat != 0){
+							google.maps.event.trigger(map, 'resize');
+							try {
+								me.setMap(null);
+							} catch (e) {
+
+							}
+							//if(scope.options == "me"){
+							me = new google.maps.Marker({
+								position: new google.maps.LatLng(center.lat, center.lng),
+								icon: "img/"+$rootScope.svg("pin2"),
+								map: map
+							});
+						}
 						$geolocation.watchPosition({
 							frequency: 1000,
 							timeout: 5000,
@@ -346,16 +384,29 @@ angular.module('Recalcine.directives', [])
 						}, function (pos) {
 							if (scope.marker.length == 0 && !centered) {
 								map.setCenter(new google.maps.LatLng(pos.lat, pos.long));
+								centered = true;
 							}
 							//map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
 							if (me) {
 								me.setPosition(new google.maps.LatLng(pos.lat, pos.long))
+							}else{
+								google.maps.event.trigger(map, 'resize');
+								try {
+									me.setMap(null);
+								} catch (e) {
+
+								}
+								//if(scope.options == "me"){
+								me = new google.maps.Marker({
+									position: new google.maps.LatLng(pos.lat, pos.long),
+									icon: "img/"+$rootScope.svg("pin2"),
+									map: map
+								});
 							}
 						});
 						google.maps.event.addListener(map, 'projection_changed', function () {
 							google.maps.event.trigger(map, 'resize');
 							$geolocation.getCurrentPosition().then(function (res) {
-								$toast.hide();
 								google.maps.event.trigger(map, 'resize');
 								if (scope.marker.length == 0) {
 									map.setCenter(new google.maps.LatLng(res.lat, res.long));
@@ -405,6 +456,7 @@ angular.module('Recalcine.directives', [])
 							});
 							marker.setMap(map);
 							map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
+							centered = true;
 						}
 						scope.$watch('marker', function (n, o) {
 							if(scope.marker[0]) {
@@ -416,6 +468,7 @@ angular.module('Recalcine.directives', [])
 									});
 									marker.setMap(map);
 									map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
+									centered = true;
 								}
 							}
 						}, true);
@@ -451,7 +504,6 @@ angular.module('Recalcine.directives', [])
 												infowindow.open(map, marker);
 											});
 											markers.push(marker);
-											$toast.hide();
 										} else {
 											if (exist.map == null) {
 												exist.setMap(map)
