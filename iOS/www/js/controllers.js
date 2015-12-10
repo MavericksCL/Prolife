@@ -1197,8 +1197,7 @@ angular.module('Recalcine.controllers', [])
 				}
 				$toast.loading($localization.get("MESSAGE.SENDING"));
 				var profile = {
-					nombre: $scope.profile.nombre || null,
-					apellidos: $scope.profile.apellidos || null,
+					username: $scope.profile.username || null,
 					email: $scope.profile.email,
 					diagnostico: $scope.profile.diagnostico || null,
 					imagen: $scope.profile.imagen || null
@@ -1207,11 +1206,9 @@ angular.module('Recalcine.controllers', [])
 					$profile.set("user", $scope.profile, false);
 					var user = $profile.get("user", false);
 					$rootScope.user = {
-						name: user.nombre,
-						lastname: user.apellidos,
+						username: user.username,
 						email: user.email,
-						imagen: user.imagen,
-						username: user.username
+						imagen: user.imagen
 					};
 					$toast.show($localization.get("MESSAGE.UPDATE_SUCCESS"));
 				}, function(){
