@@ -8144,7 +8144,21 @@ button {
       right: -25px; }
 
 .map-wrapper {
-  background: #E6E3DB !important; }
+  background: #E6E3DB !important;
+  /* Center button */ }
+  .map-wrapper .center-map {
+    background: white;
+    border: 0;
+    width: 35px;
+    height: 35px;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    box-shadow: gray 1px 1px 10px -3px;
+    cursor: pointer !important;
+    margin-right: 7px;
+    font-size: 27px;
+    color: #666666; }
 
 .sp-replacer {
   position: absolute;

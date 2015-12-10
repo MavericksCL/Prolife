@@ -302,6 +302,7 @@ angular.module('Recalcine.directives', [])
             link: function(scope, element, attr){
 	            var centered = false;
 	            var newCentered = false;
+	            var centerButton = null;
 	            var map;
 	            var markers = [];
 	            var me;
@@ -327,6 +328,21 @@ angular.module('Recalcine.directives', [])
 		            };
 
 		            map = new google.maps.Map($(element)[0], mapOptions);
+		            /* Center button */
+		            centerButton = document.createElement("button");
+		            centerButton.className = "center-map";
+		            var icon = document.createElement("i");
+		            icon.className = "icon ion-android-locate";
+		            centerButton.appendChild(icon);
+		            centerButton.addEventListener('click', function(){
+			            if(me){
+				            map.setCenter(new google.maps.LatLng(me.position.lat(), me.position.lng()));
+			            }else{
+				            $toast.show($localization.get("MESSAGE.GEOLOCALING"));
+			            }
+		            });
+		            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerButton);
+
 		            window.map = map;
 		            google.maps.event.addListener(map, 'center_changed', function () {
 			            if (scope.change) {
