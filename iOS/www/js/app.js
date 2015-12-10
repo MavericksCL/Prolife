@@ -141,6 +141,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			"PROFILE": {
 				"NAME": "Nombre",
 				"LASTNAME": "Apellido",
+				"USERNAME": "Nombre",
 				"EMAIL": "E-mail",
 				"IMAGE": "Imágen",
 				"DIAGNOSIS": "Diagnóstico"
