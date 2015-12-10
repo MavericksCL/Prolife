@@ -336,6 +336,7 @@ angular.module('Recalcine.directives', [])
 		            centerButton.appendChild(icon);
 		            centerButton.addEventListener('click', function(){
 			            if(me){
+				            console.log("Centering L.339");
 				            map.setCenter(new google.maps.LatLng(me.position.lat(), me.position.lng()));
 			            }else{
 				            $toast.show($localization.get("MESSAGE.GEOLOCALING"));
@@ -354,32 +355,14 @@ angular.module('Recalcine.directives', [])
 		            google.maps.event.addListener(map, 'resize', function () {
 			            if (scope.marker.length > 0 && !newCentered) {
 				            //if(!map.updated) {
+				            console.log("Centering L.357");
 				            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 				            newCentered = true;
 
 				            map.updated = true;
 				            //}
 			            }
-			            $geolocation.getCurrentPosition().then(function (res) {
-				            google.maps.event.trigger(map, 'resize');
-				            if (scope.marker.length == 0) {
-					            map.setCenter(new google.maps.LatLng(res.lat, res.long));
-					            centered = true;
-				            }
-				            try {
-					            me.setMap(null);
-				            } catch (e) {
 
-				            }
-				            //if(scope.options == "me"){
-				            me = new google.maps.Marker({
-					            position: new google.maps.LatLng(res.lat, res.long),
-					            icon: "img/"+$rootScope.svg("pin2"),
-					            map: map
-				            });
-			            }, function (res) {
-			            }, function (res) {
-			            });
 		            });
 		            if(center.lat != 0){
 			            google.maps.event.trigger(map, 'resize');
@@ -404,6 +387,7 @@ angular.module('Recalcine.directives', [])
 
 		            }, function (pos) {
 			            if (scope.marker.length == 0 && !centered) {
+				            console.log("Centering L.409");
 				            map.setCenter(new google.maps.LatLng(pos.lat, pos.long));
 				            centered = true;
 			            }
@@ -430,6 +414,7 @@ angular.module('Recalcine.directives', [])
 			            $geolocation.getCurrentPosition().then(function (res) {
 				            google.maps.event.trigger(map, 'resize');
 				            if (scope.marker.length == 0) {
+					            console.log("Centering L.436");
 					            map.setCenter(new google.maps.LatLng(res.lat, res.long));
 					            centered = true;
 				            }
@@ -476,6 +461,7 @@ angular.module('Recalcine.directives', [])
 				            map: map
 			            });
 			            marker.setMap(map);
+			            console.log("Centering L.483");
 			            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 			            centered = true;
 		            }
@@ -488,6 +474,7 @@ angular.module('Recalcine.directives', [])
 						            map: map
 					            });
 					            marker.setMap(map);
+					            console.log("Centering L.496");
 					            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 					            centered = true;
 				            }

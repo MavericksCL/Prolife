@@ -353,26 +353,6 @@ angular.module('Recalcine.directives', [])
 								map.updated = true;
 								//}
 							}
-							$geolocation.getCurrentPosition().then(function (res) {
-								google.maps.event.trigger(map, 'resize');
-								if (scope.marker.length == 0) {
-									map.setCenter(new google.maps.LatLng(res.lat, res.long));
-									centered = true;
-								}
-								try {
-									me.setMap(null);
-								} catch (e) {
-
-								}
-								//if(scope.options == "me"){
-								me = new google.maps.Marker({
-									position: new google.maps.LatLng(res.lat, res.long),
-									icon: "img/"+$rootScope.svg("pin2"),
-									map: map
-								});
-							}, function (res) {
-							}, function (res) {
-							});
 						});
 						if(center.lat != 0){
 							google.maps.event.trigger(map, 'resize');
