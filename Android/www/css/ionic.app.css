@@ -8147,10 +8147,13 @@ button {
   background: #E6E3DB !important;
   /* Center button */ }
   .map-wrapper .center-map {
+    position: relative;
     background: white;
+    padding: 0;
     border: 0;
-    width: 35px;
-    height: 35px;
+    width: 35px !important;
+    height: 35px !important;
+    max-width: 35px !important;
     -webkit-border-radius: 35px;
     -moz-border-radius: 35px;
     border-radius: 35px;
@@ -8159,6 +8162,17 @@ button {
     margin-right: 7px;
     font-size: 27px;
     color: #666666; }
+    .map-wrapper .center-map i {
+      height: 35px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      line-height: 45px;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      -moz-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+      -o-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%); }
 
 .sp-replacer {
   position: absolute;
