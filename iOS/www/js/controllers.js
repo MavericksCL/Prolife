@@ -903,7 +903,7 @@ angular.module('Recalcine.controllers', [])
 							$toast.show("No se ha enviado el sms");
 							deferred.resolve();
 						};
-						sms.send(number || $stateParams.phone, "Necesito ayuda http://maps.google.com/?q=" + location.lat + "," + location.long + "", options, success, error);
+						sms.send(number || $stateParams.phone, "Necesito ayuda http://maps.apple.com/?q=" + location.lat + "," + location.long + "", options, success, error);
 					}catch(e){
 						deferred.reject();
 					}
@@ -944,7 +944,7 @@ angular.module('Recalcine.controllers', [])
 				var n = number || $scope.userActive.telefono;
 				$scope.state = "end";
 				if( $scope.userActive.whatsapp ){
-					$cordovaInAppBrowser.open("whatsapp://send?text=Necesito%20ayuda%20http%3A%2F%2Fmaps.google.com%2F%3Fq%3D"+location.lat+"%2C"+location.long+"", "_system");
+					$cordovaInAppBrowser.open("whatsapp://send?text=Necesito%20ayuda%20http%3A%2F%2Fmaps.apple.com%2F%3Fq%3D"+location.lat+"%2C"+location.long+"", "_system");
 					deferred.resolve();
 				}else{
 					deferred.reject();
