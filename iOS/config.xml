@@ -72,7 +72,7 @@
     <gap:splash gap:platform="ios" height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
     <gap:splash gap:platform="ios" height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
     <gap:splash gap:platform="ios" height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
-    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <icon src="resources/ios/icon/icon-72@2x.png" />
     <platform name="ios">
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
