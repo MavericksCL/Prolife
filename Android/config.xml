@@ -51,13 +51,6 @@
     <gap:splash gap:density="port-xhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xhdpi-screen.png"/>
     <gap:splash gap:density="port-xxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxhdpi-screen.png"/>
     <gap:splash gap:density="port-xxxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxxhdpi-screen.png"/>
-    <gap:splash gap:platform="ios" height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640"/>
-    <gap:splash gap:platform="ios" height="1334" src="resources/ios/splash/Default-667h.png" width="750"/>
-    <gap:splash gap:platform="ios" height="2208" src="resources/ios/splash/Default-736h.png" width="1242"/>
-    <gap:splash gap:platform="ios" height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536"/>
-    <gap:splash gap:platform="ios" height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768"/>
-    <gap:splash gap:platform="ios" height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640"/>
-    <gap:splash gap:platform="ios" height="480" src="resources/ios/splash/Default~iphone.png" width="320"/>
     <gap:splash src="resources/android/splash/drawable-port-hdpi-screen.png"/>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>
