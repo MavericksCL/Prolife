@@ -26,5 +26,14 @@ Entra a la carpeta correspondiente para cada plataforma
 #### Producción
 ##### Android
 * Compilar para android en producción: `ionic build android --release`
+* Firmar el apk: `cd Android && jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../Publish/prolife.keystore platforms/android/build/outputs/apk/android-release-unsigned.apk prolife_key`
+* Ingresar la clave del certificado.
+* Alinear el archivo: `zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk platforms/android/build/outputs/apk/android-release-signed.apk`
+* Archivo compilado en `platforms/android/build/outputs/apk/android-release-signed.apk`
+
+###### Certificado
+* Keystore: `prolife.keystore`
+* Indice de la llave: `prolife_key`
+* Clave del almacen de llaves y clave de la llave prolife_key: `prolife!1234`
 
 ##### iOS 
