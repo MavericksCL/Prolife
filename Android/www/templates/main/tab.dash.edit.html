@@ -47,7 +47,8 @@
                         </ion-item>-->
 
                         <ion-item class="item-input gray item-icon-right item-clear-bottom item-liked" listpicker ng-model="contact.tipo">
-                            <span class="" >{{contact.tipo || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
+                            <span class="gray" ng-if="!contact.tipo" >{{contact.tipo || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
+                            <span class="" ng-if="contact.tipo" >{{contact.tipo || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
                             <i class="icon ion-chevron-down"></i>
                             <div class="hide elements">
                                 <span value="Pareja">Pareja</span>

@@ -34,7 +34,8 @@
                             <input type="text" ng-model="contactData.nombre" required minlength="3" placeholder="{{'MAIN.EMERGENCY.CONTACT_NAME'|locale}}">
                         </ion-item>
                         <ion-item class="item-input gray item-icon-right item-clear-bottom item-liked" title="{{('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}" listpicker ng-model="contact.kind">
-                            <span class="gray" >{{contact.kind || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
+                            <span class="gray" ng-if="!contact.kind" >{{contact.kind || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
+                            <span class="" ng-if="contact.kind" >{{contact.kind || ('MAIN.EMERGENCY.CONTACT_KIND.NONE'|locale)}}</span>
                             <i class="icon ion-chevron-down"></i>
                             <div class="hide elements">
                                 <span value="Pareja">Pareja</span>
