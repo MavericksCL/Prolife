@@ -791,7 +791,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 	.config(function($ionicConfigProvider) {
 		$ionicConfigProvider.tabs.position('bottom');
 		$ionicConfigProvider.platform.android.navBar.alignTitle('center');
-		$ionicConfigProvider.platform.android.views.transition('android');
+		$ionicConfigProvider.platform.android.views.transition('ios');
 	})
 
 	.config(function($stateProvider, $urlRouterProvider) {
