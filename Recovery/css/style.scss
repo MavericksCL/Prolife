@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'HelveticaNeue-Light';
+    src: url('../font/Bariol_Bold.eot');
+    src: url('../font/Bariol_Bold.eot') format('embedded-opentype'),
+    url('../font/Bariol_Bold.woff') format('woff'),
+    url('../font/Bariol_Bold.ttf') format('truetype'),
+    url('../font/Bariol_Bold.svg#HelveticaNeueLight') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeue-Light';
+    src: url('../font/Bariol_Regular.eot');
+    src: url('../font/Bariol_Regular.eot') format('embedded-opentype'),
+    url('../font/Bariol_Regular.woff') format('woff'),
+    url('../font/Bariol_Regular.ttf') format('truetype'),
+    url('../font/Bariol_Regular.svg#HelveticaNeueThin') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeue-Light';
+    src: url('../font/Bariol_Thin.eot');
+    src: url('../font/Bariol_Thin.eot') format('embedded-opentype'),
+    url('../font/Bariol_Thin.woff') format('woff'),
+    url('../font/Bariol_Thin.ttf') format('truetype'),
+    url('../font/Bariol_Thin.svg#HelveticaNeueThin') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+
+body {
+    background: url('../img/bg.png') center;
+}
+
+body * {
+    font-family: 'HelveticaNeue-Light', 'Helvetica', 'Arial', Tahoma, sans-serif;
+}
+
+button, input {
+    border-radius: 0 !important;
+}
