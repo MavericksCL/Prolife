@@ -209,8 +209,8 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 
 	.constant("SETTINGS", {
 		"toastTime": 2500,
-		"debug": true,
-		"debugvisible": true
+		"debug": false,
+		"debugvisible": false
 	})
 
 	.run(function(SERVER, SETTINGS, $rootScope, $q, $cordovaDevice, $ionicHistory ,$cordovaSplashscreen, $timeout, $ionicPlatform, $ionicSideMenuDelegate, $geolocation, $location, $toast, $localization, $profile, $state, $policies, $interval, $localStorage, $cordovaDialogs, $cordovaLocalNotification, $cordovaNetwork, LoopBackAuth) {
