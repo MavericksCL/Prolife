@@ -11,8 +11,7 @@ angular.module('Recalcine.directives', [])
     .directive("lowerspace", function($log, $interval){
         return {
             link: function(scope, element, attr){
-
-                $interval(function(){
+                var interval = $interval(function(){
 	                if(!$(element).hasClass("resized")) {
 		                var upperspace = $(element).siblings().outerHeight();
 		                if (upperspace == 0) {
@@ -21,6 +20,7 @@ angular.module('Recalcine.directives', [])
 		                var content = $(element).parents("ion-content").outerHeight();
 		                $(element).height(content - upperspace);
 		                $(element).addClass("resized");
+		                $interval.cancel(interval);
 	                }
                 }, 100);
             }
@@ -29,7 +29,7 @@ angular.module('Recalcine.directives', [])
 	.directive("upperspace", function($log, $interval){
 		return {
 			link: function(scope, element, attr){
-				$interval(function(){
+				var interval = $interval(function(){
 					if(!$(element).hasClass("resized")) {
 						var lowerspace = $(element).siblings().outerHeight();
 						if (lowerspace == 0) {
@@ -38,6 +38,7 @@ angular.module('Recalcine.directives', [])
 						var content = $(element).parents("ion-content").outerHeight();
 						$(element).height(content - lowerspace);
 						$(element).addClass("resized");
+						$interval.cancel(interval);
 					}
 				}, 100);
 			}
@@ -306,10 +307,15 @@ angular.module('Recalcine.directives', [])
 	            var map;
 	            var markers = [];
 	            var me;
+	            var intevalStyleBox = null;
+	            var intervalMapResize = null;
+	            var styleBox = null;
+	            var geoWatchFunction = null;
+	            var idGeoWatch = null;
 	            function initMap(){
 		            var infowindow = new google.maps.InfoWindow({});
 		            scope.marker = scope.marker || [];
-		            $toast.loading($localization.get("MESSAGE.LOADING"));
+		            //$toast.loading($localization.get("MESSAGE.LOADING"));
 		            var center = $localStorage.getJSON("location", false) || {lat: -33.4718999, lng: -70.9100214};
 		            if(center.long){
 			            center.lng = center.long;
@@ -336,7 +342,6 @@ angular.module('Recalcine.directives', [])
 		            centerButton.appendChild(icon);
 		            centerButton.addEventListener('click', function(){
 			            if(me){
-				            console.log("Centering L.339");
 				            map.setCenter(new google.maps.LatLng(me.position.lat(), me.position.lng()));
 			            }else{
 				            $toast.show($localization.get("MESSAGE.GEOLOCALING"));
@@ -355,7 +360,6 @@ angular.module('Recalcine.directives', [])
 		            google.maps.event.addListener(map, 'resize', function () {
 			            if (scope.marker.length > 0 && !newCentered) {
 				            //if(!map.updated) {
-				            console.log("Centering L.357");
 				            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 				            newCentered = true;
 
@@ -378,43 +382,50 @@ angular.module('Recalcine.directives', [])
 				            map: map
 			            });
 		            }
-		            $geolocation.watchPosition({
-			            frequency: 1000,
-			            timeout: 5000,
-			            enableHighAccuracy: false
-		            }).then(function () {
-		            }, function (err) {
+		            geoWatchFunction = function() {
+			            var promise = $geolocation.watchPosition({
+				            frequency: 1000,
+				            timeout: 5000,
+				            enableHighAccuracy: false
+			            });
+			            promise.then(function () {
+				            }, function (err) {
 
-		            }, function (pos) {
-			            if (scope.marker.length == 0 && !centered) {
-				            console.log("Centering L.409");
-				            map.setCenter(new google.maps.LatLng(pos.lat, pos.long));
-				            centered = true;
-			            }
-			            //map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-			            if (me) {
-				            me.setPosition(new google.maps.LatLng(pos.lat, pos.long))
-			            }else{
-				            google.maps.event.trigger(map, 'resize');
-				            try {
-					            me.setMap(null);
-				            } catch (e) {
+				            }, function (pos) {
+					            if (scope.marker.length == 0 && !centered) {
+						            try {
+							            map.setCenter(new google.maps.LatLng(pos.lat, pos.long));
+							            centered = true;
+						            }catch(E){
 
-				            }
-				            //if(scope.options == "me"){
-				            me = new google.maps.Marker({
-					            position: new google.maps.LatLng(pos.lat, pos.long),
-					            icon: "img/"+$rootScope.svg("pin2"),
-					            map: map
+						            }
+					            }
+					            //map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+					            if (me && pos) {
+						            me.setPosition(new google.maps.LatLng(pos.lat, pos.long))
+					            } else {
+						            google.maps.event.trigger(map, 'resize');
+						            try {
+							            me.setMap(null);
+						            } catch (e) {
+
+						            }
+						            //if(scope.options == "me"){
+						            me = new google.maps.Marker({
+							            position: new google.maps.LatLng(pos.lat, pos.long),
+							            icon: "img/" + $rootScope.svg("pin2"),
+							            map: map
+						            });
+					            }
 				            });
-			            }
-		            });
+			            return promise;
+		            };
+		            idGeoWatch = geoWatchFunction();
 		            google.maps.event.addListener(map, 'projection_changed', function () {
 			            google.maps.event.trigger(map, 'resize');
 			            $geolocation.getCurrentPosition().then(function (res) {
 				            google.maps.event.trigger(map, 'resize');
 				            if (scope.marker.length == 0) {
-					            console.log("Centering L.436");
 					            map.setCenter(new google.maps.LatLng(res.lat, res.long));
 					            centered = true;
 				            }
@@ -433,7 +444,7 @@ angular.module('Recalcine.directives', [])
 			            }, function (res) {
 			            });
 		            });
-		            $interval(function () {
+		            var styleBox = function () {
 			            var base = $(".gm-style div:first > :nth-child(3) :nth-child(4) > :first").append("<div class='bg-bottom-infowindow'></div>");
 			            var baseStyle = $(".gm-style div:first > :nth-child(3) :nth-child(4) > :first > :first > :nth-child(4)");
 			            if (!$(base).hasClass("transparent") && base.length > 0) {
@@ -452,7 +463,8 @@ angular.module('Recalcine.directives', [])
 				            $(baseStyle).css("background", "rgba(255, 255, 255, 0.8)");
 				            $(base).addClass("transparent");
 			            }
-		            }, 1000);
+		            };
+		            intevalStyleBox = $interval(styleBox, 1000);
 
 		            if (scope.marker.length > 0) {
 			            var marker = new google.maps.Marker({
@@ -461,7 +473,6 @@ angular.module('Recalcine.directives', [])
 				            map: map
 			            });
 			            marker.setMap(map);
-			            console.log("Centering L.483");
 			            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 			            centered = true;
 		            }
@@ -474,7 +485,6 @@ angular.module('Recalcine.directives', [])
 						            map: map
 					            });
 					            marker.setMap(map);
-					            console.log("Centering L.496");
 					            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
 					            centered = true;
 				            }
@@ -523,9 +533,65 @@ angular.module('Recalcine.directives', [])
 				            }
 			            }, true);
 		            }
-		            $interval(function () {
+		            intervalMapResize = $interval(function () {
 			            google.maps.event.trigger(map, 'resize');
 		            }, 1000);
+
+		            $rootScope.$on("$lifecycle:pause", function(){
+			            if(intervalMapResize){
+				            $interval.cancel(intervalMapResize);
+			            }
+			            if(intevalStyleBox){
+				            $interval.cancel(intevalStyleBox);
+			            }
+			            if(idGeoWatch !== false){
+				            idGeoWatch.clearWatch();
+			            }
+		            });
+		            $rootScope.$on("$lifecycle:resume", function(){
+			            if(intervalMapResize){
+				            $interval.cancel(intervalMapResize);
+			            }
+			            if(intevalStyleBox){
+				            $interval.cancel(intevalStyleBox);
+			            }
+			            if(idGeoWatch !== false){
+				            idGeoWatch.clearWatch();
+			            }
+			            intevalStyleBox = $interval(styleBox, 1000);
+			            intervalMapResize = $interval(function () {
+				            google.maps.event.trigger(map, 'resize');
+			            }, 1000);
+			            idGeoWatch = geoWatchFunction();
+		            });
+		            $rootScope.$on("$map:destroy", function(){
+			            if(intervalMapResize){
+				            $interval.cancel(intervalMapResize);
+			            }
+			            if(intevalStyleBox){
+				            $interval.cancel(intevalStyleBox);
+			            }
+			            if(idGeoWatch !== false){
+				            idGeoWatch.clearWatch();
+			            }
+		            });
+		            $rootScope.$on("$map:resume", function(){
+			            if(intervalMapResize){
+				            $interval.cancel(intervalMapResize);
+			            }
+			            if(intevalStyleBox){
+				            $interval.cancel(intevalStyleBox);
+			            }
+			            if(idGeoWatch !== false){
+				            idGeoWatch.clearWatch();
+			            }
+			            intevalStyleBox = $interval(styleBox, 1000);
+			            intervalMapResize = $interval(function () {
+				            google.maps.event.trigger(map, 'resize');
+			            }, 1000);
+			            idGeoWatch = geoWatchFunction();
+		            });
+
 	            }
 	            if($cordovaNetwork.isOffline()){
 					var interval = $interval(function(){
@@ -535,6 +601,9 @@ angular.module('Recalcine.directives', [])
 						}
 					}, 500);
 	            }else {
+		            if(interval) {
+			            $interval.cancel(interval);
+		            }
 		            initMap()
 	            }
             }

@@ -313,6 +313,12 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 
 			}
 			if (logued) {
+				if (f.name == "main.search.home" || f.name == "main.search.view" ){
+					$rootScope.$broadcast("$map:destroy");
+				}
+				if (t.name == "main.search.home" || t.name == "main.search.view" ){
+					$rootScope.$broadcast("$map:resume");
+				}
 				if (t.name == "start.main" || t.name == "start.login" || t.name == "start.recovery" || t.name == "start.step-a" || t.name == "start.step-b"
 					|| t.name == "start.step-b" || t.name == "start.list-medicine" || t.name == "start.recalcine-medicine" || t.name == "start.other-medicine") {
 					if(welcome !== false || welcome != 'false'){
@@ -584,15 +590,25 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			}
 		}, true);
 
-		$interval(function(){
+		var setNotificationFunction = function(){
 			logued = $profile.isLogued();
 			if(logued){
 				$rootScope.setNotification();
 			}else{
 				$rootScope.removeNotification();
 			}
-		}, 60000*24);
+		};
 
+		var setNotificationInterval = $interval(setNotificationFunction, 60000*24);
+		$rootScope.$on('$lifecycle:pause', function(){
+			$interval.cancel(setNotificationInterval);
+		});
+		$rootScope.$on('$lifecycle:resume', function(){
+			if(setNotificationInterval) {
+				$interval.cancel(setNotificationInterval);
+			}
+			setNotificationInterval = $interval(setNotificationFunction, 60000*24);
+		});
 
 		$rootScope.$on('$cordovaLocalNotification:click',
 			function (event, notification, state) {

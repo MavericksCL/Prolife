@@ -874,11 +874,27 @@ angular.module('Recalcine.controllers', [])
 				//$scope.activeAlert();
 			}
 		});
-		$geolocation.watchPosition({
+		var idWatchLocation = $geolocation.watchPosition({
 			frequency : 1000,
 			timeout : 5000,
 			enableHighAccuracy: false
 		});
+
+		$rootScope.$on('$lifecycle:pause', function(){
+			$geolocation.clearWatch(idWatchLocation);
+		});
+
+		$rootScope.$on('$lifecycle:resume', function(){
+			if(idWatchLocation){
+				$geolocation.clearWatch(idWatchLocation);
+			}
+			idWatchLocation = $geolocation.watchPosition({
+				frequency : 1000,
+				timeout : 5000,
+				enableHighAccuracy: false
+			});
+		});
+
 		$rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
 		});
 		$scope.state = "sms";
@@ -1065,8 +1081,8 @@ angular.module('Recalcine.controllers', [])
 				}, function(){
 
 			})
-		}, function(){
-
+		}, function(err){
+			//console.log(err);
 		}, function(res){
 			$toast.hide();
 			Sucursal.find({
@@ -1222,6 +1238,12 @@ angular.module('Recalcine.controllers', [])
 		$scope.now = new Date();
 		$scope.bars = [];
 		$scope.nowBar = 0;
+		var nowFunction = function(){
+			if($profile.isLogued()) {
+				$scope.now = new Date();
+			}
+		};
+		var nowFunctionInterval = null;
 		$scope.cleanMedicine = function(){
 			$rootScope.alarmMedicine = undefined;
 		};
@@ -1250,12 +1272,16 @@ angular.module('Recalcine.controllers', [])
 			"-ms-transform: translate(-50%, -50%) rotateZ("+$scope.nowBar+"deg);" +
 			"-o-transform: translate(-50%, -50%) rotateZ("+$scope.nowBar+"deg);" +
 			"transform: translate(-50%, -50%) rotateZ("+$scope.nowBar+"deg);";
-		$interval(function(){
-			$log.info("$interval: TabAlarmHomeCtrl: L.926");
-			if($profile.isLogued()) {
-				$scope.now = new Date();
+		nowFunctionInterval = $interval(nowFunction, 1000);
+		$rootScope.$on("$lifecycle:pause", function(){
+			$interval.cancel(nowFunctionInterval);
+		});
+		$rootScope.$on("$lifecycle:resume", function(){
+			if(nowFunctionInterval){
+				$interval.cancel(nowFunctionInterval);
 			}
-		}, 1000);
+			nowFunctionInterval = $interval(nowFunction, 1000);
+		});
 		$scope.setAlarms = function(recordatorios){
 			if(recordatorios) {
 				$rootScope.alarms = $localStorage.getJSON("alarms", false);
