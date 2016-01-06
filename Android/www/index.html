@@ -19,21 +19,24 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script>
-      window.console = {
-        error: function(){
+      var debug = false;
+      if(!debug) {
+        window.console = {
+          error: function () {
 
-        },
-        log: function(){
+          },
+          log: function () {
 
-        },
-        warn: function(){
+          },
+          warn: function () {
 
-        },
-        debug: function(){
+          },
+          debug: function () {
 
-        },
-        info: function(){
+          },
+          info: function () {
 
+          }
         }
       }
     </script>

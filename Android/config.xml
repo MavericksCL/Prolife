@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.prolife.recalcine" version="1.2.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.prolife.recalcine" version="1.2.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Prolife</name>
     <description>
     Aplicación de Prolife hecha por Alquimio
@@ -34,7 +34,8 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="BackupWebStorage" value="none" />
-    <preference name="exit-on-suspend" value="false" />
+    <preference name="KeepRunning" value="false" />
+    <preference name="exit-on-suspend" value="true" />
     <preference name="AndroidLaunchMode" value="singleTask" />
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
@@ -45,12 +46,12 @@
             <string>fb</string>
         </array>
     </gap:config-file>
-    <gap:splash gap:density="port-ldpi" gap:platform="android" src="resources/android/splash/drawable-port-ldpi-screen.png"/>
-    <gap:splash gap:density="port-mdpi" gap:platform="android" src="resources/android/splash/drawable-port-mdpi-screen.png"/>
-    <gap:splash gap:density="port-hdpi" gap:platform="android" src="resources/android/splash/drawable-port-hdpi-screen.png"/>
-    <gap:splash gap:density="port-xhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xhdpi-screen.png"/>
-    <gap:splash gap:density="port-xxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxhdpi-screen.png"/>
-    <gap:splash gap:density="port-xxxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxxhdpi-screen.png"/>
-    <gap:splash src="resources/android/splash/drawable-port-hdpi-screen.png"/>
-    <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
+    <gap:splash gap:density="port-ldpi" gap:platform="android" src="resources/android/splash/drawable-port-ldpi-screen.png" />
+    <gap:splash gap:density="port-mdpi" gap:platform="android" src="resources/android/splash/drawable-port-mdpi-screen.png" />
+    <gap:splash gap:density="port-hdpi" gap:platform="android" src="resources/android/splash/drawable-port-hdpi-screen.png" />
+    <gap:splash gap:density="port-xhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
+    <gap:splash gap:density="port-xxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
+    <gap:splash gap:density="port-xxxhdpi" gap:platform="android" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+    <gap:splash src="resources/android/splash/drawable-port-hdpi-screen.png" />
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
 </widget>
