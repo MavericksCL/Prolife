@@ -22,11 +22,11 @@
 
 @font-face {
   font-family: 'HelveticaNeue-Light';
-  src: url('../font/Bariol_Thin.eot');
-  src: url('../font/Bariol_Thin.eot') format('embedded-opentype'),
-  url('../font/Bariol_Thin.woff') format('woff'),
-  url('../font/Bariol_Thin.ttf') format('truetype'),
-  url('../font/Bariol_Thin.svg#HelveticaNeueThin') format('svg');
+  src: url('../font/Bariol_Regular.eot');
+  src: url('../font/Bariol_Regular.eot') format('embedded-opentype'),
+  url('../font/Bariol_Regular.woff') format('woff'),
+  url('../font/Bariol_Regular.ttf') format('truetype'),
+  url('../font/Bariol_Regular.svg#HelveticaNeueThin') format('svg');
   font-weight: 300;
   font-style: normal;
 }
@@ -39,12 +39,12 @@ body {
 .font-ios {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
   &.font-light {
-    font-weight: 300 !important;
+    font-weight: normal !important;
   }
 }
 
 .font-light {
-  font-weight: 300 !important;
+  font-weight: normal !important;
 }
 
 .font-normal {

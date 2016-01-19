@@ -412,7 +412,8 @@ button {
   }
   .nombre-cadena {
     @extend .font-ios;
-    @extend .font-light;
+    font-weight: normal !important;
+    //@extend .font-light;
     color: $positive;
     font-size: 15px;
   }

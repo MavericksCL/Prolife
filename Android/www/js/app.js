@@ -419,8 +419,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 							$rootScope.setting.alert_s = false;
 						}catch(e){}
 						try {
-							$cordovaLocalNotification.clearAll();
-							$cordovaLocalNotification.cancelAll();
+							cordova.plugins.notification.local.cancelAll();
 						}catch(e){}
 						$profile.redirect("start.main");
 					}
@@ -447,28 +446,36 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			var start = 1;
 			var rightNow = new Date();
 			if($profile.isLogued()) {
-				_.defer(function () {
-					$rootScope.removeNotification().then(function () {
-						if ($rootScope.setting.alert_m || $rootScope.setting.alert_s) {
-							alarms = _.filter(alarms, function (o) {
-								var time = new Date(o.time);
-								var now = new Date();
-								return time >= now;
-							});
-							_.forEach(alarms, function (v, k) {
+				$rootScope.removeNotification().then(function () {
+					if ($rootScope.setting.alert_m || $rootScope.setting.alert_s) {
+						alarms = _.filter(alarms, function (o) {
+							var time = new Date(o.time);
+							var now = new Date();
+							return time >= now;
+						});
+						// Agrupar por Tipos!
+						var alarmsGrouped = _.groupBy(alarms, 'idAlarm');
+						var alarmsNotification = [];
+						for(id in alarmsGrouped){
+							alarmsNotification[id] = alarmsNotification[id] || 0;
+							console.log(alarmsNotification[id]);
+							_.forEach(alarmsGrouped[id], function (v, k) {
 								var h = new Date(v.time);
 								h.setMinutes(h.getMinutes() - minutes);
 								if ($rootScope.setting.alert_m) {
 									if (h.getTime() > rightNow.getTime()) {
-										notifications.push({
-											id: start,
-											title: 'Recuerda tomar ' + v.medicine,
-											text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
-											at: h,
-											smallIcon: "res://ic_stat_pill",
-											data: {kind: 'medicine', idAlarm: v.idAlarm}
-										});
-										start++;
+										if(alarmsNotification[id] < 48) {
+											notifications.push({
+												id: start,
+												title: 'Recuerda tomar ' + v.medicine,
+												text: 'Aún te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
+												at: h,
+												smallIcon: "res://ic_stat_pill",
+												data: {kind: 'medicine', idAlarm: v.idAlarm}
+											});
+											start++;
+											alarmsNotification[id]++;
+										}
 									}
 								}
 								if ($rootScope.setting.alert_s) {
@@ -476,26 +483,33 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 									h.setMinutes(h.getMinutes());
 									if (v.pre <= 5) {
 										if (h.getTime() > rightNow.getTime()) {
-											notifications.push({
-												id: start,
-												title: '¡Alerta de Stock de ' + v.medicine + "!",
-												text: 'Te quedan ' + new Number(v.pre) + " dosis",
-												at: h,
-												smallIcon: "res://ic_stat_pill",
-												data: {kind: 'stock', idAlarm: v.idAlarm}
-											});
-											start++;
+											if(alarmsNotification[id] < 60) {
+												notifications.push({
+													id: start,
+													title: '¡Alerta de Stock de ' + v.medicine + "!",
+													text: 'Stock: Te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
+													at: h,
+													smallIcon: "res://ic_stat_pill",
+													data: {kind: 'stock', idAlarm: v.idAlarm}
+												});
+												start++;
+												alarmsNotification[id]++;
+											}
 										}
 									}
 								}
 							});
 						}
-						$cordovaLocalNotification.schedule(notifications);
-						defer.resolve();
-					}, function (e) {
-						defer.reject();
-						throw e;
+					}
+					cordova.plugins.notification.local.getScheduled(function (not) {
+						if(not.length == 0 && notifications.length < 500){
+							$cordovaLocalNotification.schedule(notifications)
+						}
 					});
+					defer.resolve();
+				}, function (e) {
+					defer.reject();
+					throw e;
 				});
 			}else{
 				defer.reject();
@@ -505,15 +519,9 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 		$rootScope.removeNotification = function(kind){
 			var defer = $q.defer();
 			try{
-				cordova.plugins.notification.local.getScheduled(function (notifications) {
-					var clear = [];
-					_.forEach(notifications, function(v){
-						clear.push(v.id);
-					});
-					cordova.plugins.notification.local.cancel(clear, function () {
-						defer.resolve();
-					});
-				}, function(e){
+				cordova.plugins.notification.local.cancelAll(function () {
+					defer.resolve();
+				}, function(){
 					defer.reject();
 					throw e
 				});
@@ -659,7 +667,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 
 			//if there wasn't a decimal point or there was but nothing was after it
 			return parseInt(string[0], radix);
-		}
+		};
 
 		$rootScope.$watch('recordatorios', function(n, a){
 			if($profile.isLogued()) {
