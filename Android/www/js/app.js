@@ -468,7 +468,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 											notifications.push({
 												id: start,
 												title: 'Recuerda tomar ' + v.medicine,
-												text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
+												text: 'Aún te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
 												at: h,
 												smallIcon: "res://ic_stat_pill",
 												data: {kind: 'medicine', idAlarm: v.idAlarm}
@@ -487,7 +487,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 												notifications.push({
 													id: start,
 													title: '¡Alerta de Stock de ' + v.medicine + "!",
-													text: 'Te quedan ' + new Number(v.pre) + " dosis",
+													text: 'Stock: Te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
 													at: h,
 													smallIcon: "res://ic_stat_pill",
 													data: {kind: 'stock', idAlarm: v.idAlarm}
@@ -667,7 +667,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 
 			//if there wasn't a decimal point or there was but nothing was after it
 			return parseInt(string[0], radix);
-		}
+		};
 
 		$rootScope.$watch('recordatorios', function(n, a){
 			if($profile.isLogued()) {
