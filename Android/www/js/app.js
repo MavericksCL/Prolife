@@ -419,8 +419,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 							$rootScope.setting.alert_s = false;
 						}catch(e){}
 						try {
-							$cordovaLocalNotification.clearAll();
-							$cordovaLocalNotification.cancelAll();
+							cordova.plugins.notification.local.cancelAll();
 						}catch(e){}
 						$profile.redirect("start.main");
 					}
@@ -449,49 +448,64 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			if($profile.isLogued()) {
 				$rootScope.removeNotification().then(function () {
 					if ($rootScope.setting.alert_m || $rootScope.setting.alert_s) {
-						debugger;
-						return;
 						alarms = _.filter(alarms, function (o) {
 							var time = new Date(o.time);
 							var now = new Date();
 							return time >= now;
 						});
-						_.forEach(alarms, function (v, k) {
-							var h = new Date(v.time);
-							h.setMinutes(h.getMinutes() - minutes);
-							if ($rootScope.setting.alert_m) {
-								if (h.getTime() > rightNow.getTime()) {
-									notifications.push({
-										id: start,
-										title: 'Recuerda tomar ' + v.medicine,
-										text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
-										at: h,
-										smallIcon: "res://ic_stat_pill",
-										data: {kind: 'medicine', idAlarm: v.idAlarm}
-									});
-									start++;
-								}
-							}
-							if ($rootScope.setting.alert_s) {
+						// Agrupar por Tipos!
+						var alarmsGrouped = _.groupBy(alarms, 'idAlarm');
+						var alarmsNotification = [];
+						for(id in alarmsGrouped){
+							alarmsNotification[id] = alarmsNotification[id] || 0;
+							console.log(alarmsNotification[id]);
+							_.forEach(alarmsGrouped[id], function (v, k) {
 								var h = new Date(v.time);
-								h.setMinutes(h.getMinutes());
-								if (v.pre <= 5) {
+								h.setMinutes(h.getMinutes() - minutes);
+								if ($rootScope.setting.alert_m) {
 									if (h.getTime() > rightNow.getTime()) {
-										notifications.push({
-											id: start,
-											title: '¡Alerta de Stock de ' + v.medicine + "!",
-											text: 'Te quedan ' + new Number(v.pre) + " dosis",
-											at: h,
-											smallIcon: "res://ic_stat_pill",
-											data: {kind: 'stock', idAlarm: v.idAlarm}
-										});
-										start++;
+										if(alarmsNotification[id] < 48) {
+											notifications.push({
+												id: start,
+												title: 'Recuerda tomar ' + v.medicine,
+												text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
+												at: h,
+												smallIcon: "res://ic_stat_pill",
+												data: {kind: 'medicine', idAlarm: v.idAlarm}
+											});
+											start++;
+											alarmsNotification[id]++;
+										}
 									}
 								}
-							}
-						});
+								if ($rootScope.setting.alert_s) {
+									var h = new Date(v.time);
+									h.setMinutes(h.getMinutes());
+									if (v.pre <= 5) {
+										if (h.getTime() > rightNow.getTime()) {
+											if(alarmsNotification[id] < 60) {
+												notifications.push({
+													id: start,
+													title: '¡Alerta de Stock de ' + v.medicine + "!",
+													text: 'Te quedan ' + new Number(v.pre) + " dosis",
+													at: h,
+													smallIcon: "res://ic_stat_pill",
+													data: {kind: 'stock', idAlarm: v.idAlarm}
+												});
+												start++;
+												alarmsNotification[id]++;
+											}
+										}
+									}
+								}
+							});
+						}
 					}
-					$cordovaLocalNotification.schedule(notifications);
+					cordova.plugins.notification.local.getScheduled(function (not) {
+						if(not.length == 0 && notifications.length < 500){
+							$cordovaLocalNotification.schedule(notifications)
+						}
+					});
 					defer.resolve();
 				}, function (e) {
 					defer.reject();
