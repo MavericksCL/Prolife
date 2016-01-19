@@ -447,55 +447,55 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			var start = 1;
 			var rightNow = new Date();
 			if($profile.isLogued()) {
-				_.defer(function () {
-					$rootScope.removeNotification().then(function () {
-						if ($rootScope.setting.alert_m || $rootScope.setting.alert_s) {
-							alarms = _.filter(alarms, function (o) {
-								var time = new Date(o.time);
-								var now = new Date();
-								return time >= now;
-							});
-							_.forEach(alarms, function (v, k) {
+				$rootScope.removeNotification().then(function () {
+					if ($rootScope.setting.alert_m || $rootScope.setting.alert_s) {
+						debugger;
+						return;
+						alarms = _.filter(alarms, function (o) {
+							var time = new Date(o.time);
+							var now = new Date();
+							return time >= now;
+						});
+						_.forEach(alarms, function (v, k) {
+							var h = new Date(v.time);
+							h.setMinutes(h.getMinutes() - minutes);
+							if ($rootScope.setting.alert_m) {
+								if (h.getTime() > rightNow.getTime()) {
+									notifications.push({
+										id: start,
+										title: 'Recuerda tomar ' + v.medicine,
+										text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
+										at: h,
+										smallIcon: "res://ic_stat_pill",
+										data: {kind: 'medicine', idAlarm: v.idAlarm}
+									});
+									start++;
+								}
+							}
+							if ($rootScope.setting.alert_s) {
 								var h = new Date(v.time);
-								h.setMinutes(h.getMinutes() - minutes);
-								if ($rootScope.setting.alert_m) {
+								h.setMinutes(h.getMinutes());
+								if (v.pre <= 5) {
 									if (h.getTime() > rightNow.getTime()) {
 										notifications.push({
 											id: start,
-											title: 'Recuerda tomar ' + v.medicine,
-											text: 'Aún te quedan ' + new Number(v.pre) + " dosis",
+											title: '¡Alerta de Stock de ' + v.medicine + "!",
+											text: 'Te quedan ' + new Number(v.pre) + " dosis",
 											at: h,
 											smallIcon: "res://ic_stat_pill",
-											data: {kind: 'medicine', idAlarm: v.idAlarm}
+											data: {kind: 'stock', idAlarm: v.idAlarm}
 										});
 										start++;
 									}
 								}
-								if ($rootScope.setting.alert_s) {
-									var h = new Date(v.time);
-									h.setMinutes(h.getMinutes());
-									if (v.pre <= 5) {
-										if (h.getTime() > rightNow.getTime()) {
-											notifications.push({
-												id: start,
-												title: '¡Alerta de Stock de ' + v.medicine + "!",
-												text: 'Te quedan ' + new Number(v.pre) + " dosis",
-												at: h,
-												smallIcon: "res://ic_stat_pill",
-												data: {kind: 'stock', idAlarm: v.idAlarm}
-											});
-											start++;
-										}
-									}
-								}
-							});
-						}
-						$cordovaLocalNotification.schedule(notifications);
-						defer.resolve();
-					}, function (e) {
-						defer.reject();
-						throw e;
-					});
+							}
+						});
+					}
+					$cordovaLocalNotification.schedule(notifications);
+					defer.resolve();
+				}, function (e) {
+					defer.reject();
+					throw e;
 				});
 			}else{
 				defer.reject();
@@ -505,15 +505,9 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 		$rootScope.removeNotification = function(kind){
 			var defer = $q.defer();
 			try{
-				cordova.plugins.notification.local.getScheduled(function (notifications) {
-					var clear = [];
-					_.forEach(notifications, function(v){
-						clear.push(v.id);
-					});
-					cordova.plugins.notification.local.cancel(clear, function () {
-						defer.resolve();
-					});
-				}, function(e){
+				cordova.plugins.notification.local.cancelAll(function () {
+					defer.resolve();
+				}, function(){
 					defer.reject();
 					throw e
 				});
