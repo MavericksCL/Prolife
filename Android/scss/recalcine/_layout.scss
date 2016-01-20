@@ -105,6 +105,13 @@ button {
     left: 85px;
   }
 }
+.profile-image {
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .add-shape-plus {
   display: inline-block;
   position: relative;

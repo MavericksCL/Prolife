@@ -5,7 +5,7 @@
       <div class="item item-calm item-profile" ui-sref="others.profileedit">
         <div class="picture">
           <i ng-if="!user.imagen || user.imagen == ''" class="icon ion-android-person"></i>
-          <img ng-if="user.imagen || user.imagen != ''" ng-src="{{user.imagen}}" alt=""/>
+          <div class="profile-image" ng-if="user.imagen || user.imagen != ''" style="background-image: url({{user.imagen}});" ></div>
         </div>
         <div class="name"><span>{{user.name}} {{user.lastname}}</span> <span ng-if="(!user.name && !user.lastname) || (user.name.length == 0 && user.lastname.length == 0)">{{user.username}}</span></div>
         <div class="email">{{user.email}}</div>

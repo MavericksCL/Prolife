@@ -213,7 +213,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 		"debugvisible": false
 	})
 
-	.run(function(SERVER, SETTINGS, $rootScope, $q, $cordovaDevice, $ionicHistory ,$cordovaSplashscreen, $timeout, $ionicPlatform, $ionicSideMenuDelegate, $geolocation, $location, $toast, $localization, $profile, $state, $policies, $interval, $localStorage, $cordovaDialogs, $cordovaLocalNotification, $cordovaNetwork, LoopBackAuth) {
+	.run(function(SERVER, SETTINGS, $rootScope, $q, $cordovaDevice, $cordovaStatusbar, $ionicHistory ,$cordovaSplashscreen, $timeout, $ionicPlatform, $ionicSideMenuDelegate, $geolocation, $location, $toast, $localization, $profile, $state, $policies, $interval, $localStorage, $cordovaDialogs, $cordovaLocalNotification, $cordovaNetwork, LoopBackAuth) {
 		$ionicPlatform.ready(function() {
 			if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -243,6 +243,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 					});
 				});
 			}
+			$cordovaStatusbar.styleHex('#1194F6');
 			$timeout(function(){
 				$cordovaSplashscreen.hide();
 			}, 2000);
@@ -259,6 +260,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 			document.addEventListener("resume", function() {
 				$rootScope.$broadcast("$lifecycle:resume")
 			});
+
 		});
 
 		$rootScope.debug_visible = SETTINGS.debugvisible;
@@ -519,12 +521,14 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 		$rootScope.removeNotification = function(kind){
 			var defer = $q.defer();
 			try{
-				cordova.plugins.notification.local.cancelAll(function () {
-					defer.resolve();
-				}, function(){
-					defer.reject();
-					throw e
-				});
+				if(cordova.plugins && cordova.plugins.notification) {
+					cordova.plugins.notification.local.cancelAll(function () {
+						defer.resolve();
+					}, function () {
+						defer.reject();
+						throw e
+					});
+				}
 			}catch(e){
 				//$localStorage.setJSON("notifications", notisLeft, false);
 				defer.reject();
