@@ -251,14 +251,14 @@ angular.module('Recalcine.directives', [])
 								sourceType: Camera.PictureSourceType.CAMERA,
 								allowEdit: true,
 								MediaType: Camera.MediaType.PICTURE,
-								encodingType: Camera.EncodingType.PNG,
+								encodingType: Camera.EncodingType.JPEG,
 								targetWidth: 100,
 								targetHeight: 100,
 								popoverOptions: CameraPopoverOptions,
 								saveToPhotoAlbum: true
 							};
 							$cordovaCamera.getPicture(options).then(function (imageData) {
-								s.model = "data:image/png;base64," + imageData;
+								s.model = "data:image/jpeg;base64," + imageData;
 								$cordovaCamera.cleanup();
 								$toast.hide();
 							}, function(err){
@@ -274,12 +274,12 @@ angular.module('Recalcine.directives', [])
 								sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
 								allowEdit: true,
 								MediaType: Camera.MediaType.PICTURE,
-								encodingType: Camera.EncodingType.PNG,
+								encodingType: Camera.EncodingType.JPEG,
 								targetWidth: 100,
 								targetHeight: 100,
 								popoverOptions: CameraPopoverOptions
 							}).then(function (imageData) {
-								s.model = "data:image/png;base64," + imageData;
+								s.model = "data:image/jpeg;base64," + imageData;
 								$cordovaCamera.cleanup();
 								$toast.hide();
 							}, function(err){

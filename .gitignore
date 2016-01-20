@@ -3,6 +3,7 @@
 
 */node_modules/
 */platforms/
+!*/platforms/android/AndroidManifest.xml
 */plugins/
 */.idea
 .idea
