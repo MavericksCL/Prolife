@@ -23,7 +23,6 @@
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",
-    "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
     {
       "locator": "https://github.com/cordova-sms/cordova-sms-plugin.git",
@@ -65,7 +64,8 @@
     {
       "locator": "https://github.com/roberthovhannisyan/PhoneGap-Plugin-ListPicker.git",
       "id": "cordova-plugin-listpicker"
-    }
+    },
+    "cordova-plugin-splashscreen@3.0.0"
   ],
   "cordovaPlatforms": [
     "ios",

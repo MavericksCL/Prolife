@@ -293,6 +293,7 @@ angular.module('Recalcine.directives', [])
 		}
 	})
     .directive("map", function($log, $interval, $rootScope, $localStorage, $timeout, $filter, $toast, $localization, $geolocation, $cordovaNetwork){
+
         return {
             scope:  {
                 options: "=map",
@@ -312,6 +313,15 @@ angular.module('Recalcine.directives', [])
 	            var styleBox = null;
 	            var geoWatchFunction = null;
 	            var idGeoWatch = null;
+	            var centerMap = function(marker, center){
+		            var interval = setInterval(function(){
+			            if(map){
+				            marker.setMap(map);
+				            map.setCenter(center);
+				            clearInterval(interval);
+			            }
+		            }, 500);
+	            };
 	            function initMap(){
 		            var infowindow = new google.maps.InfoWindow({});
 		            scope.marker = scope.marker || [];
@@ -335,6 +345,10 @@ angular.module('Recalcine.directives', [])
 
 		            map = new google.maps.Map($(element)[0], mapOptions);
 		            /* Center button */
+		            // BORRAR ESTO
+		            setTimeout(function(){
+
+
 		            centerButton = document.createElement("button");
 		            centerButton.className = "center-map";
 		            var icon = document.createElement("i");
@@ -484,9 +498,14 @@ angular.module('Recalcine.directives', [])
 						            icon: "img/" + $rootScope.svg("pin"),
 						            map: map
 					            });
-					            marker.setMap(map);
-					            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
-					            centered = true;
+					            if(map) {
+						            marker.setMap(map);
+						            map.setCenter(new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
+						            centered = true;
+					            }else{
+						            centerMap(marker, new google.maps.LatLng(scope.marker[0].lat, scope.marker[0].lng));
+						            centered = true;
+					            }
 				            }
 			            }
 		            }, true);
@@ -536,7 +555,7 @@ angular.module('Recalcine.directives', [])
 		            intervalMapResize = $interval(function () {
 			            google.maps.event.trigger(map, 'resize');
 		            }, 1000);
-
+		            }, 1000);
 		            $rootScope.$on("$lifecycle:pause", function(){
 			            if(intervalMapResize){
 				            $interval.cancel(intervalMapResize);

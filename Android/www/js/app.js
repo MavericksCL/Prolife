@@ -473,6 +473,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 												text: 'Aún te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
 												at: h,
 												smallIcon: "res://ic_stat_pill",
+												icon: "res://icon",
 												data: {kind: 'medicine', idAlarm: v.idAlarm}
 											});
 											start++;
@@ -492,6 +493,7 @@ angular.module('Recalcine', ['ionic','ngCordova', 'lbServices', 'Recalcine.contr
 													text: 'Stock: Te quedan ' + new Number(v.pre) + " dosis de " + v.medicine,
 													at: h,
 													smallIcon: "res://ic_stat_pill",
+													icon: "res://icon",
 													data: {kind: 'stock', idAlarm: v.idAlarm}
 												});
 												start++;
